@@ -1,10 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1>Hei, {{ bruker.fornavn }}!</h1>
 
-    <h1>Hei {{ session.user.fornavn }} {{ session.user.etternavn }}!</h1>
+<p>Velkommen til profilen din.</p>
 
-    <label for="fornavn">Ditt fornavn</label>
-    <input name="fornavn" id="fornavn" value="{{ session.user.fornavn }}">
+<p><strong>Brukernavn:</strong> {{ bruker.username }}</p>
+<p><strong>Fullt navn:</strong> {{ bruker.fullt_navn }}</p>
+
+<hr>
+
+<h2>Legg til notat</h2>
+<form method="POST" action="/add-note">
+    <textarea name="content" rows="4" cols="50" placeholder="Skriv et notat..." required></textarea>
+    <br><br>
+    <button type="submit">Lagre notat</button>
+</form>
+
+<hr>
+
+<h2>Mine notater</h2>
+
+{% if notes %}
+    {% for note in notes %}
+        <div style="border:1px solid #ccc; padding:10px; margin:10px 0; border-radius:8px;">
+            <p>{{ note["content"] }}</p>
+            <small>{{ note["created_at"] }}</small>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Ingen notater ennå.</p>
+{% endif %}
 
 {% endblock %}
